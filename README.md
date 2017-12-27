@@ -1,6 +1,25 @@
 # pcf-certification
 Study material for Pivotal Cloud Foundry certification exams
 
+# Useful cf commands
+
+- `cf env <app-name>`
+- `cf security-groups`
+- `cf create-user-provided-service <log-forwarding-service-name> -l syslog://<host:port>`
+- `cf scale <app-name> -i <instance-count>`
+
+# Blue-Green Deployments
+
+Goal: Test new code in isolation before going live.
+
+1. Deploy new app version with a non-live route, e.g. my-app-beta.domain.com
+2. Test the new app, perhaps providing it to a small audience of beta testers
+3. Map your live route (i.e. GLB) to the new version and keep the existing mapping to the old version, so that both are live.
+  - Users will be load-balanced across old and new version instances.
+  - This technique allows you to ramp of confidence that new version is working as expected, but limits customer exposure
+  - Control ratio of new vs old traffic using the app instances ratio. Downside is if you want about 10% of traffic to go to new app then you'll need 9 instances of the old and 1 of the new.
+4. Once confidence is reached, scan horizontally the new version as needed then unmap the old version from the GLB.
+
 # Diego Architecture
 
 ## Auctioning
